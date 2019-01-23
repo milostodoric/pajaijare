@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Implementation-Title: ZAVRSNI
+Implementation-Version: 1.2.7.RELEASE
+Built-By: milos
+Implementation-Vendor-Id: org.springframework.boot
+Build-Jdk: 1.8.0_191
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+
