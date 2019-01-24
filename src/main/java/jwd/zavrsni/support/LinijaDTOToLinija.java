@@ -5,6 +5,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import jwd.zavrsni.model.Linija;
+import jwd.zavrsni.model.Prevoznik;
 import jwd.zavrsni.service.LinijaService;
 import jwd.zavrsni.service.PrevoznikService;
 import jwd.zavrsni.web.dto.LinijaDTO;
@@ -21,6 +22,13 @@ public class LinijaDTOToLinija
 	
 	@Override
 	public Linija convert(LinijaDTO source) {
+		Prevoznik prevoznik = null;
+			if(source.getPrevoznikId() != null) {
+				prevoznik = prevoznikService.findOne(source.getPrevoznikId());
+			}
+			
+		if (prevoznik != null) {
+		
 		Linija linija;
 		if(source.getId()==null){
 			linija = new Linija();
@@ -36,9 +44,11 @@ public class LinijaDTOToLinija
 		linija.setCena(source.getCena());
 		linija.setVremePolaska(source.getVremePolaska());
 		linija.setDestinacija(source.getDestinacija());
-		linija.setPrevoznik(source.getPrevoznikId());
+		linija.setPrevoznik(prevoznik);
 		
 		return linija;
+	} else {
+		throw new IllegalStateException("Pokušavate da promenite nepostojeću liniju!!!");
+		}
 	}
-
 }

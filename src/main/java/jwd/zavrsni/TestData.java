@@ -23,25 +23,25 @@ public class TestData {
 	@PostConstruct
 	public void init() {
 		
-		Prevoznik k1 = new Prevoznik();
-		k1.setNaziv("SuRent");
-		k1.setAdresa("Balzakova 1");
-		k1.setTelefon("024/151-363");
-		prevoznikService.save(k1);
+		Prevoznik p1 = new Prevoznik();
+		p1.setNaziv("Prevoznik 1");
+		p1.setAdresa("Adresa 1");
+		p1.setPib("101000111");
+		prevoznikService.save(p1);
 		
-		Prevoznik k2 = new Prevoznik();
-		k2.setNaziv("NSRent");
-		k2.setAdresa("Maksima Gorkog 2");
-		k2.setTelefon("021/4141-515");
-		prevoznikService.save(k2);
+		Prevoznik p2 = new Prevoznik();
+		p2.setNaziv("NSRent");
+		p2.setAdresa("Maksima Gorkog 2");
+		p2.setPib("110110110");
+		prevoznikService.save(p2);
 		
-		Linija a1 = new Linija();
-		a1.setBrojMesta("Nissan Prairie");
-		a1.setRegistracija("SU82404");
-		a1.setGodiste(1991);
-		a1.setPotrosnja(10.3);
-		a1.setKompanija(k1);
+		Linija l1 = new Linija();
+		l1.setBrojMesta(50);
+		l1.setCena(200.00);
+		l1.setVremePolaska("09:00");
+		l1.setDestinacija("Bec");
+		l1.setPrevoznik(p1);
 		
-		linijaService.save(a1);
+		linijaService.save(l1);
 	}
 }

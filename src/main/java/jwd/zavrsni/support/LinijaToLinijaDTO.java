@@ -17,22 +17,21 @@ public class LinijaToLinijaDTO
 	public LinijaDTO convert(Linija source) {
 		LinijaDTO dto = new LinijaDTO();
 		dto.setId(source.getId());
-		dto.setModel(source.getBrojMesta());
-		dto.setRegistracija(source.getCena());
-		dto.setGodiste(source.getVremePolaska());
-		dto.setPotrosnja(source.getDestinacija());
-		dto.setIznajmljen(source.getIznajmljen());
-		dto.setKompanijaId(source.getKompanija().getId());
-		dto.setKompanijaNaziv(source.getKompanija().getNaziv());
+		dto.setBrojMesta(source.getBrojMesta());
+		dto.setCena(source.getCena());
+		dto.setVremePolaska(source.getVremePolaska());
+		dto.setDestinacija(source.getDestinacija());
+		dto.setPrevoznikId(source.getPrevoznik().getId());
+		dto.setPrevoznikNaziv(source.getPrevoznik().getNaziv());
 		
 		return dto;
 	}
 	
-	public List<LinijaDTO> convert(List<Linija> automobili){
+	public List<LinijaDTO> convert(List<Linija> linije){
 		List<LinijaDTO> ret = new ArrayList<>();
 		
-		for(Linija a : automobili){
-			ret.add(convert(a));
+		for(Linija l : linije){
+			ret.add(convert(l));
 		}
 		
 		return ret;

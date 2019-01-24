@@ -1,115 +1,115 @@
-var rentApp = angular.module("rentApp", ['ngRoute']);
+var zavrsniApp = angular.module("zavrsniApp", ['ngRoute']);
 
-rentApp.config(['$routeProvider', function ($routeProvider) {
+zavrsniApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/',{
-        templateUrl: '/app/html/automobili.html'
-    }).when('/automobili/edit/:id',{
-        templateUrl: '/app/html/edit-automobil.html'
+        templateUrl: '/app/html/linije.html'
+    }).when('/linije/edit/:id',{
+        templateUrl: '/app/html/edit-linija.html'
     }).otherwise({
         redirectTo: '/'
     });
 }]);
 
-rentApp.controller("automobiliCtrl", function($scope, $http, $location){
+zavrsniApp.controller("linijeCtrl", function($scope, $http, $location){
 
-	var baseUrlKompanije = "/api/kompanije";
-    var baseUrlAutomobili = "/api/automobili";
+	var baseUrlPrevoznici = "/api/prevoznici";
+    var baseUrlLinije = "/api/linije";
     
 
     $scope.pageNum = 0;
     $scope.totalPages = 0;
 
-    $scope.kompanije = [];
-    $scope.automobili = [];
+    $scope.prevoznici = [];
+    $scope.linije = [];
 
-    $scope.novAutomobil = {};
-    $scope.novAutomobil.model = "";
-    $scope.novAutomobil.registracija = "";
-    $scope.novAutomobil.godiste = "";
-    $scope.novAutomobil.potrosnja = "";
-    $scope.novAutomobil.kompanijaId = "";
+    $scope.novaLinija = {};
+    $scope.novaLinija.brojMesta = "";
+    $scope.novaLinija.cena = "";
+    $scope.novaLinija.vremePolaska = "";
+    $scope.novaLinija.destinacija = "";
+    $scope.novaLinija.prevoznikId = "";
     
 
 
-    $scope.trazeniAutomobil = {};
-    $scope.trazeniAutomobil.model = "";
-    $scope.trazeniAutomobil.godiste = "";
-    $scope.trazeniAutomobil.potrosnja = "";
+    $scope.trazenaLinija = {};
+    $scope.trazenaLinija.destinacija = "";
+    $scope.trazenaLinija.prevoznik = "";
+    $scope.trazenaLinija.cena = "";
 
-    var getAutomobili = function(){
+    var getPrevoznici = function(){
 
         var config = {params: {}};
 
         config.params.pageNum = $scope.pageNum;
 
-        if($scope.trazeniAutomobil.model != ""){
-            config.params.model = $scope.trazeniAutomobil.model;
+        if($scope.trazenaLinija.destinacija != ""){
+            config.params.destinacija = $scope.trazenaLinija.destinacija;
         }
 
-        if($scope.trazeniAutomobil.godiste != ""){
-            config.params.godiste = $scope.trazeniAutomobil.godiste;
+        if($scope.trazenaLinija.prevoznik != ""){
+            config.params.prevoznik = $scope.trazenaLinija.prevoznik;
         }
 
-        if($scope.trazeniAutomobil.potrosnja != ""){
-            config.params.potrosnja = $scope.trazeniAutomobil.potrosnja;
+        if($scope.trazenaLinija.cena != ""){
+            config.params.cena = $scope.trazeniLinija.cena;
         }
 
 
-        $http.get(baseUrlAutomobili, config)
+        $http.get(baseUrlLinije, config)
             .then(
             	function success(res){
-            		$scope.automobili = res.data;
+            		$scope.linije = res.data;
             		$scope.totalPages = res.headers('totalPages');
             	},
             	function error(res){
-            		alert("Neuspesno dobavljanje automobila!");
+            		alert("Neuspesno dobavljanje linije!");
             	}
             );
     };
 
-    var getKompanije = function(){
+    var getPrevoznici = function(){
 
-        $http.get(baseUrlKompanije)
+        $http.get(baseUrlPrevoznici)
             .then(
             	function success(res){
-            		$scope.kompanije = res.data;
+            		$scope.prevoznici = res.data;
             	},
             	function error(res){
-            		alert("Neuspesno dobavljanje kompanija!");
+            		alert("Neuspesno dobavljanje prevoznik!");
             	}
             );
 
     };
 
-    getKompanije();
-    getAutomobili();
+    getPrevoznici();
+    getLinije();
    
 
     $scope.nazad = function(){
         if($scope.pageNum > 0) {
             $scope.pageNum = $scope.pageNum - 1;
-            getAutomobili();
+            getLinije();
         }
     };
 
     $scope.napred = function(){
         if($scope.pageNum < $scope.totalPages - 1){
             $scope.pageNum = $scope.pageNum + 1;
-            getAutomobili();
+            getLinije();
         }
     };
 
     $scope.dodaj = function(){
-        $http.post(baseUrlAutomobili, $scope.novAutomobil)
+        $http.post(baseUrlLinije, $scope.novaLinija)
             .then(
             	function success(res){
-            		getAutomobili();
-	
-            		$scope.novAutomobil.model = "";
-            	    $scope.novAutomobil.registracija = "";
-            	    $scope.novAutomobil.godiste = "";
-            	    $scope.novAutomobil.potrosnja = "";
-            	    $scope.novAutomobil.kompanijaId = "";
+            		getLinije();
+            		
+            		$scope.novaLinija.brojMesta = "";
+            	    $scope.novaLinija.cena = "";
+            	    $scope.novaLinija.vremePolaska = "";
+            	    $scope.novaLinija.destinacija = "";
+            	    $scope.novaLinija.prevoznikId = "";
             	},
             	function error(res){
             		alert("Neuspesno dodavanje!");
@@ -119,17 +119,17 @@ rentApp.controller("automobiliCtrl", function($scope, $http, $location){
 
     $scope.trazi = function () {
         $scope.pageNum = 0;
-        getAutomobili();
+        getLinije();
     }
 
     $scope.izmeni = function(id){
-        $location.path('/automobili/edit/' + id);
+        $location.path('/linije/edit/' + id);
     }
 
     $scope.obrisi = function(id){
-        $http.delete(baseUrlAutomobili + "/" + id).then(
+        $http.delete(baseUrlLinije + "/" + id).then(
             function success(data){
-            	getAutomobili();
+            	getLinije();
             },
             function error(data){
                 alert("Neuspesno brisanje!");
@@ -137,49 +137,49 @@ rentApp.controller("automobiliCtrl", function($scope, $http, $location){
         );
     }
     
-    $scope.iznajmi = function(id){
-    	$http.post(baseUrlAutomobili + "/" + id + "/iznajmljivanje").then(
+/*    $scope.iznajmi = function(id){
+    	$http.post(baseUrlLinije + "/" + id + "/iznajmljivanje").then(
     		function success(data){
-    			alert("Automobil je uspesno iznajmljen.");
-    			getAutomobili();
+    			alert("Linija je uspesno iznajmljen.");
+    			getLinije();
     		},
     		function error(data){
     			alert("Nije uspelo iznajmljivanje")
     		}
     	)
-    }
-});
+    
+});*/
 
-rentApp.controller("editAutomobilCtrl", function($scope, $http, $routeParams, $location){
+zavrsniApp.controller("editLinijaCtrl", function($scope, $http, $routeParams, $location){
 
-	var baseUrlAutomobili = "/api/automobili";
+	var baseUrlLinije = "/api/linije";
 
-    $scope.stariAutomobil = null;
+    $scope.staraLinija = null;
 
-    var getStariAutomobil = function(){
+    var getStaraLinija = function(){
 
-        $http.get(baseUrlAutomobili + "/" + $routeParams.id)
+        $http.get(baseUrlLinije + "/" + $routeParams.id)
             .then(
             	function success(res){
-            		$scope.stariAutomobil = res.data;
+            		$scope.staraLinija = res.data;
             	},
             	function error(data){
-            		alert("Neušpesno dobavljanje automobila.");
+            		alert("Neušpesno dobavljanje linije.");
             	}
             );
 
     }
-    getStariAutomobil();
+    getStaraLinija();
     
     $scope.izmeni = function(){
-        $http.put(baseUrlAutomobili + "/" + $scope.stariAutomobil.id, $scope.stariAutomobil)
+        $http.put(baseUrlLinije + "/" + $scope.staraLinija.id, $scope.staraLinija)
             .then(
         		function success(data){
-        			alert("Uspešno izmenjen automobil!");
+        			alert("Uspešno izmenjena linija!");
         			$location.path("/");
         		},
         		function error(data){
-        			alert("Neuspešna izmena automobila.");
+        			alert("Neuspešna izmena linije.");
         		}
             );
     }
